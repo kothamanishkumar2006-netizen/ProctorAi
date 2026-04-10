@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Analytics Overview - ProctorAI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+    <!-- Main Sidebar -->
+    <aside
+        class="fixed left-0 top-0 h-full w-64 bg-white dark:bg-background-dark/50 border-r border-slate-200 dark:border-slate-800 z-50">
+        <div class="p-6 flex items-center gap-3">
+            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <span class="material-icons-round text-white text-xl">security</span>
+            </div>
+            <span class="text-xl font-bold tracking-tight">ProctorAI</span>
+        </div>
+        <nav class="mt-6 px-4 space-y-2">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white transition-all"
+                href="dashboard-admin.html">
+                <span class="material-icons-round">dashboard</span>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all"
+                href="dashboard-admin-violations.html">
+                <span class="material-icons-round">assessment</span>
+                <span class="font-medium">Reports</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all"
+                href="#" onclick="logout()">
+                <span class="material-icons-round">logout</span>
+                <span class="font-medium">Sign Out</span>
+            </a>
+        </nav>
+        <div class="absolute bottom-8 left-0 w-full px-6">
+            <div class="p-4 bg-slate-100 dark:bg-slate-800/50 rounded-xl">
+                <p class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold mb-2 tracking-wider">
+                    Storage Usage</p>
+                <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full mb-2">
+                    <div class="h-full bg-primary w-3/4 rounded-full"></div>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-400">750GB / 1TB used</p>
+            </div>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="ml-64 p-8">
+        <!-- Top Bar -->
+        <header class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+                <p class="text-slate-500 dark:text-slate-400">Overview of system health and student integrity.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <span
+                        class="material-icons-round absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+                    <input onchange="searchData()"
+                        class="pl-10 pr-4 py-2 rounded-lg border-none bg-white dark:bg-slate-800/50 ring-1 ring-slate-200 dark:ring-slate-700 focus:ring-2 focus:ring-primary w-64 text-sm outline-none transition-all"
+                        placeholder="Search data..." type="text" />
+                </div>
+                <button onclick="showNotifications()"
+                    class="w-10 h-10 flex items-center justify-center rounded-lg bg-white dark:bg-slate-800/50 ring-1 ring-slate-200 dark:ring-slate-700 hover:text-primary transition-all">
+                    <span class="material-icons-round">notifications</span>
+                </button>
+                <div class="h-10 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+                <div class="flex items-center gap-3">
+                    <img class="w-10 h-10 rounded-full border border-primary/20"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpRgOtqEbSIkZJV2l3rsGBfXltzp8AQwhxWGsiats-zZoyGlx6vTz72n-Qzsy_9OtDqXcFZXUbF46ACo-elWTvakmCDhUU-hvqpBbFUNeYz0FKKiMRaD3GA75cpnfLbUncZ5gkru207CGzqFHF4gRMDjMMIXchUOXLxonWhn5SghKOHsLly-B5EXGZ2FnXcMxZPOtrecZTsMgfFw32BCa7DaSpep6uGycdX1XdFQlkWS9-A2swQ2BFX2poZYI_uwjwUqb1pu8gfQJM" />
+                    <div class="hidden lg:block">
+                        <p class="text-sm font-semibold">Dr. Julian Vance</p>
+                        <p class="text-xs text-slate-500">System Administrator</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Metric Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div
+                class="bg-white dark:bg-slate-800/40 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between group hover:border-primary/40 transition-all cursor-default">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Exams</p>
+                    <h2 class="text-3xl font-bold" id="stats-active-exams">12,482</h2>
+                    <p class="text-xs text-emerald-500 font-medium flex items-center mt-2 gap-1">
+                        <span class="material-icons-round text-sm">trending_up</span> +12% from last month
+                    </p>
+                </div>
+                <div
+                    class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                    <span class="material-icons-round text-3xl">school</span>
+                </div>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-800/40 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between group hover:border-primary/40 transition-all cursor-default">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Violations</p>
+                    <h2 class="text-3xl font-bold" id="stats-pending-violations">1,024</h2>
+                    <p class="text-xs text-amber-500 font-medium flex items-center mt-2 gap-1">
+                        <span class="material-icons-round text-sm">info</span> AI flagged 85% accuracy
+                    </p>
+                </div>
+                <div
+                    class="w-14 h-14 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform">
+                    <span class="material-icons-round text-3xl">report_problem</span>
+                </div>
+            </div>
+            <div
+                class="bg-white dark:bg-slate-800/40 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between group hover:border-primary/40 transition-all cursor-default">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">High-Risk Students</p>
+                    <h2 class="text-3xl font-bold" id="stats-total-students">42</h2>
+                    <p class="text-xs text-red-500 font-medium flex items-center mt-2 gap-1">
+                        <span class="material-icons-round text-sm">warning</span> Action required
+                    </p>
+                </div>
+                <div
+                    class="w-14 h-14 bg-red-500/10 rounded-xl flex items-center justify-center text-red-500 group-hover:scale-110 transition-transform">
+                    <span class="material-icons-round text-3xl">person_off</span>
+                </div>
+            </div>
+        </section>
+        <!-- Analytics Visuals -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Daily Violation Bar Chart -->
+            <div
+                class="lg:col-span-2 bg-white dark:bg-slate-800/40 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="text-lg font-semibold">Violations per Day</h3>
+                    <div class="flex gap-2">
+                        <button class="px-3 py-1 text-xs font-medium rounded-lg bg-primary text-white">Weekly</button>
+                        <button
+                            class="px-3 py-1 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Monthly</button>
+                    </div>
+                </div>
+                <div class="h-64 flex items-end justify-between gap-4">
+                    <div class="flex-1 group relative">
+                        <div class="bg-primary/20 group-hover:bg-primary/40 transition-all rounded-t-lg w-full h-32">
+                        </div>
+                        <p class="text-[10px] text-center mt-2 text-slate-500">Mon</p>
+                    </div>
+                    <div class="flex-1 group relative">
+                        <div class="bg-primary/20 group-hover:bg-primary/40 transition-all rounded-t-lg w-full h-48">
+                        </div>
+                        <p class="text-[10px] text-center mt-2 text-slate-500">Tue</p>
+                    </div>
+                    <div class="flex-1 group relative">
+                        <div class="bg-primary group-hover:bg-primary/80 transition-all rounded-t-lg w-full h-60"></div>
+                        <p class="text-[10px] text-center mt-2 text-slate-500">Wed</p>
+                    </div>
+                    <div class="flex-1 group relative">
+                        <div class="bg-primary/20 group-hover:bg-primary/40 transition-all rounded-t-lg w-full h-24">
+                        </div>
+                        <p class="text-[10px] text-center mt-2 text-slate-500">Thu</p>
+                    </div>
+                    <div class="flex-1 group relative">
+                        <div class="bg-primary/20 group-hover:bg-primary/40 transition-all rounded-t-lg w-full h-40">
+                        </div>
+                        <p class="text-[10px] text-center mt-2 text-slate-500">Fri</p>
+                    </div>
+                    <div class="flex-1 group relative">
+                        <div class="bg-primary/20 group-hover:bg-primary/40 transition-all rounded-t-lg w-full h-12">
+                        </div>
+                        <p class="text-[10px] text-center mt-2 text-slate-500">Sat</p>
+                    </div>
+                    <div class="flex-1 group relative">
+                        <div class="bg-primary/20 group-hover:bg-primary/40 transition-all rounded-t-lg w-full h-20">
+                        </div>
+                        <p class="text-[10px] text-center mt-2 text-slate-500">Sun</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Risk Distribution -->
+            <div class="bg-white dark:bg-slate-800/40 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+                <h3 class="text-lg font-semibold mb-6">AI Confidence Distribution</h3>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-500">High Confidence Flags</span>
+                            <span class="font-bold" id="ai-pct-high">78%</span>
+                        </div>
+                        <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full">
+                            <div id="ai-bar-high" class="h-full bg-emerald-500 w-[78%] rounded-full transition-all duration-700"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-500">Uncertain Flags</span>
+                            <span class="font-bold" id="ai-pct-medium">15%</span>
+                        </div>
+                        <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full">
+                            <div id="ai-bar-medium" class="h-full bg-amber-500 w-[15%] rounded-full transition-all duration-700"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-slate-500">Manual Review Required</span>
+                            <span class="font-bold" id="ai-pct-low">7%</span>
+                        </div>
+                        <div class="h-2 bg-slate-100 dark:bg-slate-700 rounded-full">
+                            <div id="ai-bar-low" class="h-full bg-red-500 w-[7%] rounded-full transition-all duration-700"></div>
+                        </div>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-slate-200 dark:border-slate-700">
+                        <p class="text-xs text-slate-500 leading-relaxed italic">
+                            "System detected a 14% decrease in false-positive flags following the latest AI model update
+                            (v4.2.1)."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Recent Critical Alerts Table -->
+        <section class="bg-white dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden mb-8">
+            <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <h3 class="text-lg font-semibold">Recent Critical Alerts</h3>
+                <div class="flex gap-3">
+                    <button onclick="exportCSV()"
+                        class="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                        <span class="material-icons-round text-lg">file_download</span> Export CSV
+                    </button>
+                    <button onclick="window.location.href='dashboard-admin-violations.html'"
+                        class="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-white hover:bg-primary/90 transition-colors">
+                        Review All
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead
+                        class="bg-slate-50 dark:bg-slate-900/40 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider font-semibold">
+                        <tr>
+                            <th class="px-6 py-4">Student</th>
+                            <th class="px-6 py-4">Exam ID</th>
+                            <th class="px-6 py-4">Violation Type</th>
+                            <th class="px-6 py-4">AI Confidence</th>
+                            <th class="px-6 py-4 text-right">Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-alerts-body" class="divide-y divide-slate-200 dark:divide-slate-800">
+                        <!-- Populated by admin.js -->
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">MT</div>
+                                    <div>
+                                        <p class="text-sm font-semibold">Marcus Thorne</p>
+                                        <p class="text-xs text-slate-500">CS-401 Final</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-mono text-xs text-slate-500">EXM-98421</td>
+                            <td class="px-6 py-4"><span class="text-sm">Multiple Person Detection</span></td>
+                            <td class="px-6 py-4 text-sm font-medium">94%</td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">CRITICAL</span>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">ER</div>
+                                    <div>
+                                        <p class="text-sm font-semibold">Elena Rodriguez</p>
+                                        <p class="text-xs text-slate-500">Advanced Psych</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-mono text-xs text-slate-500">EXM-98502</td>
+                            <td class="px-6 py-4"><span class="text-sm">Audio: External Speech</span></td>
+                            <td class="px-6 py-4 text-sm font-medium">81%</td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">SUSPICIOUS</span>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">JH</div>
+                                    <div>
+                                        <p class="text-sm font-semibold">James Holloway</p>
+                                        <p class="text-xs text-slate-500">Modern Hist 101</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-mono text-xs text-slate-500">EXM-98555</td>
+                            <td class="px-6 py-4"><span class="text-sm">Tab Switching</span></td>
+                            <td class="px-6 py-4 text-sm font-medium">100%</td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">SUSPICIOUS</span>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">DC</div>
+                                    <div>
+                                        <p class="text-sm font-semibold">David Chen</p>
+                                        <p class="text-xs text-slate-500">Bio Chemistry</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 font-mono text-xs text-slate-500">EXM-98711</td>
+                            <td class="px-6 py-4"><span class="text-sm">Missing Candidate</span></td>
+                            <td class="px-6 py-4 text-sm font-medium">65%</td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="px-3 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">LOW RISK</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-6 border-t border-slate-200 dark:border-slate-800 text-center">
+                <button onclick="window.location.href='dashboard-admin-violations.html'"
+                    class="text-primary text-sm font-semibold hover:underline">View All Critical Incidents (124 more)</button>
+            </div>
+        </section>
+        <!-- Footer -->
+        <footer class="mt-4 flex justify-between items-center text-slate-500 text-sm">
+            <p>© 2024 ProctorAI Security Systems. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+                <a class="hover:text-primary transition-colors" href="#">Documentation</a>
+            </div>
+        </footer>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

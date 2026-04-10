@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Proctor Monitoring Panel</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-200 antialiased overflow-hidden">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <aside
+            class="w-20 lg:w-64 flex-shrink-0 bg-background-dark border-r border-primary/10 flex flex-col items-center lg:items-stretch">
+            <div class="p-6 flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                    <span class="material-icons-round text-white">security</span>
+                </div>
+                <span class="text-xl font-bold text-white hidden lg:block tracking-tight">ProctorAI</span>
+            </div>
+            <nav class="flex-1 px-4 space-y-2 mt-4">
+                <a class="flex items-center gap-3 p-3 rounded-lg bg-primary text-white" href="dashboard-proctor.html">
+                    <span class="material-icons-round">dashboard</span>
+                    <span class="hidden lg:block font-medium">Monitoring</span>
+                </a>
+                <a class="flex items-center gap-3 p-3 rounded-lg text-slate-400 hover:bg-primary/10 hover:text-primary transition-all"
+                    href="dashboard-violations.html">
+                    <span class="material-icons-round">assessment</span>
+                    <span class="hidden lg:block font-medium">Violations</span>
+                </a>
+                <div class="pt-4 pb-2">
+                    <hr class="border-primary/5" />
+                </div>
+                <a class="flex items-center gap-3 p-3 rounded-lg text-slate-400 hover:bg-primary/10 hover:text-primary transition-all"
+                    href="#" onclick="logout()">
+                    <span class="material-icons-round">logout</span>
+                    <span class="hidden lg:block font-medium">Sign Out</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-primary/10">
+                <div class="flex items-center gap-3 p-2">
+                    <img class="w-10 h-10 rounded-full border-2 border-primary"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI2zP3aQO7rIJGTLWcQeqxwpAeAjuQ6Xpc_aEnfi7Fw0wuRUXK6gF6hAYuKDOxwzLrThRT5q-mdHhyvH1VGKVkeXJ39m_q6G1YVC1LbO2zKwBg-A2VRAjuS9OXYeke3aJeBg0paArddCoA3ngkHU_VD-ztnqjBkB4vXDzFoMmLGtGuYbwZNCkamk1-qEUaW3Qd32pSRG0rv8JxiUQRI2KDb9OpbxKDKwrj-OKwF_omi5pkbnppQkL_z3eZjsN7p47zw8WNjr8Jdr1E" />
+                    <div class="hidden lg:block">
+                        <p class="text-xs text-slate-400">Proctor ID: #1024</p>
+                        <p class="text-sm font-semibold text-white">Dr. Sarah Smith</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0">
+            <!-- Top Header -->
+            <header
+                class="h-20 bg-background-dark/50 border-b border-primary/10 px-8 flex items-center justify-between">
+                <div class="flex items-center gap-8">
+                    <div>
+                        <h1 class="text-white font-semibold text-lg">Final Exam: Advanced Computer Science</h1>
+                        <p class="text-slate-400 text-xs uppercase tracking-widest font-medium">Batch 2024 • Section A
+                        </p>
+                    </div>
+                    <div
+                        class="hidden xl:flex items-center gap-4 bg-primary/5 px-4 py-2 rounded-lg border border-primary/10">
+                        <div class="flex flex-col items-center px-2">
+                            <span class="text-xs text-slate-400 uppercase">Active</span>
+                            <span class="text-sm font-bold text-white" id="stat-active">--</span>
+                        </div>
+                        <div class="w-[1px] h-8 bg-primary/20"></div>
+                        <div class="flex flex-col items-center px-2">
+                            <span class="text-xs text-slate-400 uppercase">Flagged</span>
+                            <span class="text-sm font-bold text-red-500" id="stat-flagged">--</span>
+                        </div>
+                        <div class="w-[1px] h-8 bg-primary/20"></div>
+                        <div class="flex flex-col items-center px-2">
+                            <span class="text-xs text-slate-400 uppercase">Offline</span>
+                            <span class="text-sm font-bold text-amber-500" id="stat-offline">--</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative hidden md:block">
+                        <span class="material-icons-round absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">search</span>
+                        <input class="bg-background-dark border border-primary/20 rounded-lg pl-10 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary w-64 transition-all"
+                            placeholder="Search student ID..." type="text" />
+                    </div>
+                    <button class="w-10 h-10 flex items-center justify-center bg-background-dark border border-primary/20 rounded-lg text-slate-400 hover:text-white transition-colors">
+                        <span class="material-icons-round">notifications</span>
+                    </button>
+                    <button onclick="broadcastAlert()"
+                        class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-all">
+                        <span class="material-icons-round text-sm">emergency</span>
+                        Broadcast Alert
+                    </button>
+                </div>
+            </header>
+            <!-- Filters and Sort -->
+            <section
+                class="px-8 py-4 bg-background-dark/30 border-b border-primary/5 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <button data-filter-btn="all" onclick="filterStudents('all')"
+                        class="px-3 py-1.5 rounded bg-primary/20 text-primary text-xs font-semibold border border-primary/30">All Students</button>
+                    <button data-filter-btn="flagged" onclick="filterStudents('flagged')"
+                        class="px-3 py-1.5 rounded hover:bg-primary/10 text-slate-400 text-xs font-semibold">High Risk</button>
+                    <button data-filter-btn="lowConnectivity" onclick="filterStudents('lowConnectivity')"
+                        class="px-3 py-1.5 rounded hover:bg-primary/10 text-slate-400 text-xs font-semibold">Low Connectivity</button>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-xs text-slate-500">Auto-refresh: 5s</span>
+                    <button id="sort-risk-btn" onclick="toggleSortByRisk()"
+                        class="text-slate-400 hover:text-white flex items-center gap-1 text-xs uppercase font-bold tracking-wider">
+                        <span class="material-icons-round text-sm">sort</span> Sort by Risk
+                    </button>
+                </div>
+            </section>
+            <!-- Monitoring Grid -->
+            <section class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                <div id="student-grid"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                    <!-- Content injected via JS -->
+                    <div class="col-span-full text-center py-20 text-slate-500">
+                        <span class="material-icons-round text-4xl mb-2">sync</span>
+                        <p>Loading active sessions...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <!-- Right Side Panel - Real-time Alerts -->
+        <aside class="w-80 flex-shrink-0 bg-background-dark border-l border-primary/10 hidden xl:flex flex-col">
+            <div class="p-6 border-b border-primary/10">
+                <h2 class="text-white font-semibold flex items-center gap-2">
+                    <span class="material-icons-round text-primary">history</span>
+                    Real-time Alerts
+                </h2>
+            </div>
+            <div id="alert-log" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                <!-- High Risk Alert -->
+                <div class="p-3 bg-red-500/5 border border-red-500/10 rounded-lg space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-red-400 font-bold uppercase tracking-wider">High Risk Alert</span>
+                        <span class="text-[10px] text-slate-500">14:22:10</span>
+                    </div>
+                    <p class="text-xs text-slate-300"><span class="text-white font-semibold">Elena Gilbert</span>:
+                        Multiple faces detected by AI engine.</p>
+                    <div class="flex gap-2 pt-1">
+                        <button class="text-[10px] font-bold text-primary uppercase">Quick View</button>
+                        <button class="text-[10px] font-bold text-red-500 uppercase">Archive</button>
+                    </div>
+                </div>
+                <!-- Status Update -->
+                <div class="p-3 bg-primary/5 border border-primary/10 rounded-lg space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-primary font-bold uppercase tracking-wider">Status Update</span>
+                        <span class="text-[10px] text-slate-500">14:21:45</span>
+                    </div>
+                    <p class="text-xs text-slate-300"><span class="text-white font-semibold">Jason Voorhees</span>
+                        connection lost. Auto-reconnect initiated.</p>
+                </div>
+                <!-- Suspicious Behavior -->
+                <div class="p-3 bg-amber-500/5 border border-amber-500/10 rounded-lg space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Suspicious
+                            Behavior</span>
+                        <span class="text-[10px] text-slate-500">14:20:02</span>
+                    </div>
+                    <p class="text-xs text-slate-300"><span class="text-white font-semibold">Sarah Jenkins</span>: Eyes
+                        off-screen for 15+ seconds.</p>
+                    <div class="flex gap-2 pt-1">
+                        <button class="text-[10px] font-bold text-primary uppercase">Quick View</button>
+                    </div>
+                </div>
+                <!-- System Event -->
+                <div class="p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-lg space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-wider">System
+                            Event</span>
+                        <span class="text-[10px] text-slate-500">14:18:30</span>
+                    </div>
+                    <p class="text-xs text-slate-300">Exam session started for <span class="text-white font-semibold">45
+                            students</span>.</p>
+                </div>
+                <!-- Info -->
+                <div class="p-3 border border-primary/5 rounded-lg space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Info</span>
+                        <span class="text-[10px] text-slate-500">14:15:22</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Environment scanning completed for all active sessions.</p>
+                </div>
+            </div>
+            <!-- Session Health Footer -->
+            <div class="p-4 border-t border-primary/10 bg-background-dark/80">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs text-slate-400 font-medium">Session Health</span>
+                    <span class="text-xs text-emerald-500 font-bold" id="session-health-label">Stable</span>
+                </div>
+                <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-emerald-500" id="session-health-bar" style="width: 94%"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(19,91,236,0.05); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(19,91,236,0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(19,91,236,0.4); }
+    </style>
+    <script src="js/api.js?v=2"></script>
+    <script src="js/auth.js?v=2"></script>
+    <script src="js/monitoring.js?v=2"></script>
+</body>
+
+</html>

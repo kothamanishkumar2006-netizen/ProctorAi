@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Detailed Violation Reports | ProctorAI Admin</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex">
+    <aside
+        class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark/50 hidden lg:flex flex-col">
+        <div class="p-6">
+            <div class="flex items-center gap-3 text-primary">
+                <span class="material-icons text-3xl">security</span>
+                <span class="font-bold text-xl tracking-tight">ProctorAI</span>
+            </div>
+        </div>
+        <nav class="flex-1 px-4 space-y-2">
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-primary/10 hover:text-primary transition-all"
+                href="dashboard-proctor.html">
+                <span class="material-icons">dashboard</span>
+                <span>Monitoring</span>
+            </a>
+            <a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary font-medium"
+                href="dashboard-violations.html">
+                <span class="material-icons">assessment</span>
+                <span>Violations</span>
+            </a>
+            <div class="pt-4 mt-4 border-t border-primary/10">
+                <a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-primary/10 hover:text-primary transition-all"
+                    href="#" onclick="logout()">
+                    <span class="material-icons">logout</span>
+                    <span>Sign Out</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+    <main class="flex-1 flex flex-col min-w-0 relative">
+        <header
+            class="h-16 border-b border-primary/10 flex items-center justify-between px-8 bg-background-light dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-10">
+            <div class="flex items-center gap-2 text-sm text-slate-500">
+                <span>Reports</span>
+                <span class="material-icons text-xs">chevron_right</span>
+                <span class="text-primary font-medium">Violation Details</span>
+            </div>
+        </header>
+        <div class="p-8 overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold mb-2">Detailed Violation Reports</h1>
+                <p class="text-slate-500">Review AI-flagged incidents across all active examination sessions.</p>
+            </div>
+            <!-- Search & Filter Bar -->
+            <div
+                class="bg-white dark:bg-background-dark/40 border border-primary/10 p-4 rounded-xl mb-6 flex flex-wrap gap-4 items-center">
+                <div class="flex-1 min-w-[300px] relative">
+                    <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">search</span>
+                    <input
+                        class="w-full bg-background-light dark:bg-background-dark/60 border-primary/10 rounded-lg pl-10 pr-4 py-2 focus:ring-primary focus:border-primary"
+                        placeholder="Search Student Name, ID, or Exam..." type="text"
+                        oninput="filterViolations(this.value)" />
+                </div>
+                <div class="flex items-center gap-3">
+                    <select onchange="filterByRisk(this.value)"
+                        class="bg-background-light dark:bg-background-dark/60 border-primary/10 rounded-lg px-4 py-2 text-sm focus:ring-primary focus:border-primary">
+                        <option value="">Risk Level: All</option>
+                        <option value="high">High Risk</option>
+                        <option value="medium">Medium Risk</option>
+                        <option value="low">Low Risk</option>
+                    </select>
+                    <button class="flex items-center gap-2 text-primary px-4 py-2 hover:bg-primary/10 rounded-lg transition-colors text-sm font-medium">
+                        <span class="material-icons text-sm">filter_list</span>
+                        More Filters
+                    </button>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-background-dark/40 border border-primary/10 rounded-xl overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-primary/5 border-b border-primary/10">
+                        <tr>
+                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Student
+                                Name</th>
+                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Exam ID
+                            </th>
+                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Violation Type</th>
+                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">Risk
+                                Score</th>
+                            <th class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                Timestamp</th>
+                            <th
+                                class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 text-right">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="violations-body" class="divide-y divide-primary/5">
+                        <!-- Content injected via JS -->
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-slate-500">Loading violations...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Detailed Modal -->
+        <div id="evidence-modal"
+            class="fixed inset-0 bg-background-dark/90 backdrop-blur-md z-[60] flex items-center justify-center p-6 hidden">
+            <div
+                class="bg-white dark:bg-background-dark border border-white/10 rounded-2xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col overflow-hidden">
+                <!-- Modal Header -->
+                <div
+                    class="p-5 border-b border-primary/10 flex items-center justify-between bg-white dark:bg-background-dark/50">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-rose-500/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-rose-500">gpp_maybe</span>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold tracking-tight">Violation Evidence Preview</h2>
+                            <p class="text-xs text-slate-500 font-medium uppercase tracking-widest">Incident ID: <span
+                                    id="modal-id">--</span></p>
+                        </div>
+                    </div>
+                    <button onclick="closeModal()"
+                        class="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-colors text-slate-400 hover:text-white">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                <!-- Modal Body -->
+                <div class="flex flex-1 overflow-hidden">
+                    <!-- Evidence Viewer -->
+                    <div class="flex-1 bg-black/40 flex flex-col">
+                        <div class="flex-1 relative group p-6 flex items-center justify-center overflow-hidden">
+                            <div
+                                class="relative w-full h-full max-w-4xl shadow-2xl rounded-xl overflow-hidden border border-white/10">
+                                <img id="modal-image" alt="Evidence"
+                                    class="w-full h-full object-contain bg-black/20" src="" />
+                                <!-- Detection Bounding Boxes -->
+                                <div class="absolute inset-0 pointer-events-none" id="modal-detection-overlay">
+                                    <div
+                                        class="absolute top-[20%] left-[30%] w-[15%] h-[25%] border-2 border-rose-500 rounded-sm shadow-[0_0_15px_rgba(244,63,94,0.5)]">
+                                        <span
+                                            class="absolute -top-6 left-0 bg-rose-500 text-white text-[10px] px-1.5 py-0.5 font-bold whitespace-nowrap">SECOND
+                                            PERSON [94%]</span>
+                                    </div>
+                                    <div
+                                        class="absolute top-[15%] left-[55%] w-[15%] h-[25%] border-2 border-emerald-500/50 rounded-sm">
+                                        <span
+                                            class="absolute -top-6 left-0 bg-emerald-500 text-white text-[10px] px-1.5 py-0.5 font-bold whitespace-nowrap">PRIMARY
+                                            CANDIDATE [99%]</span>
+                                    </div>
+                                </div>
+                                <!-- Stream badge -->
+                                <div
+                                    class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[10px] font-mono text-slate-300">
+                                    4K WEBCAM STREAM • FRAME 12,442
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Video Scrubber -->
+                        <div class="p-6 bg-white dark:bg-background-dark/80 border-t border-primary/10">
+                            <div class="flex items-center gap-6">
+                                <div class="flex items-center gap-1">
+                                    <button onclick="prevEvidenceFrame()"
+                                        class="p-2 hover:bg-primary/10 rounded-lg text-slate-400 hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined">fast_rewind</span>
+
+                                    </button>
+                                    <button
+                                        class="p-3 bg-primary text-white rounded-full shadow-lg shadow-primary/30 hover:scale-105 transition-transform">
+                                        <span class="material-symbols-outlined">play_arrow</span>
+                                    </button>
+                                    <button onclick="nextEvidenceFrame()"
+                                        class="p-2 hover:bg-primary/10 rounded-lg text-slate-400 hover:text-primary transition-colors">
+                                        <span class="material-symbols-outlined">fast_forward</span>
+
+                                    </button>
+                                </div>
+                                <div class="flex-1 space-y-2">
+                                    <div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase">
+                                        <span>-5.0s</span>
+                                        <span class="text-primary" id="modal-frame-label">Current Frame (T-0.0s)</span>
+
+                                        <span>+5.0s</span>
+                                    </div>
+                                    <input class="w-full cursor-pointer" max="100" min="0" step="1" type="range"
+                                        value="50" style="appearance:none; background:rgba(19,91,236,0.2); height:6px; border-radius:9999px;" />
+                                    <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                                        <span id="modal-ts-start">--:--:-- --</span>
+                                        <span id="modal-ts-mid">--:--:-- --</span>
+                                        <span id="modal-ts-end">--:--:-- --</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Evidence Details Panel -->
+                    <div
+                        class="w-96 bg-slate-50 dark:bg-background-dark/30 border-l border-primary/10 p-8 flex flex-col gap-8 overflow-y-auto">
+                        <div class="space-y-4">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Evidence Details</h3>
+                            <div class="space-y-4">
+                                <!-- Student Info -->
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 rounded-full border-2 border-primary/20 p-0.5 bg-primary/10 flex items-center justify-center">
+                                        <span class="material-icons text-primary">person</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-lg" id="modal-student-name">--</p>
+                                        <p class="text-sm text-slate-500" id="modal-student-id">--</p>
+                                    </div>
+                                </div>
+                                <!-- Violation Type -->
+                                <div class="grid grid-cols-1 gap-3">
+                                    <div class="p-3 bg-white dark:bg-white/5 rounded-xl border border-primary/5">
+                                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Violation Type
+                                        </p>
+                                        <p class="text-sm font-semibold text-rose-500" id="modal-type">--</p>
+                                    </div>
+                                    <!-- Confidence + Timestamp -->
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div class="p-3 bg-white dark:bg-white/5 rounded-xl border border-primary/5">
+                                            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Confidence
+                                            </p>
+                                            <p class="text-lg font-bold text-rose-500" id="modal-confidence">--</p>
+                                        </div>
+                                        <div class="p-3 bg-white dark:bg-white/5 rounded-xl border border-primary/5">
+                                            <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Timestamp
+                                            </p>
+                                            <p class="text-sm font-semibold" id="modal-timestamp-time">--</p>
+                                            <p class="text-[10px] text-slate-500" id="modal-timestamp-date">--</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Context Info -->
+                        <div class="space-y-4">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Context Info</h3>
+                            <div class="text-sm space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500">Exam Title:</span>
+                                    <span class="font-medium" id="modal-exam-title">--</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500">Course Code:</span>
+                                    <span class="font-mono text-xs" id="modal-course-code">--</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-500">Browser:</span>
+                                    <span class="font-medium" id="modal-browser">Chrome (Locked)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="mt-auto space-y-3 pt-6 border-t border-primary/10">
+                            <button onclick="confirmViolationAction()"
+                                class="w-full bg-rose-600 hover:bg-rose-700 text-white py-3 rounded-xl font-bold transition-all shadow-lg shadow-rose-600/20 flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                Confirm Violation
+                            </button>
+                            <button onclick="dismissViolationAction()"
+                                class="w-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-900 dark:text-white py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-white/10">
+                                <span class="material-symbols-outlined text-[20px]">cancel</span>
+                                Dismiss as False Positive
+                            </button>
+                            <button onclick="downloadEvidence()"
+                                class="w-full text-primary hover:bg-primary/5 py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 border border-primary/20">
+                                <span class="material-symbols-outlined text-[20px]">download</span>
+                                Download Evidence
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/api.js?v=2"></script>
+    <script src="js/auth.js?v=2"></script>
+    <script src="js/violations.js?v=2"></script>
+</body>
+
+</html>

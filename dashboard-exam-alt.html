@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Live Exam Interface (Variant) | Secure Proctor</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "surface-dark": "#1e293b",
+                        "border-dark": "#334155"
+                    },
+                    fontFamily: {
+                        "display": ["Lexend"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            overflow: hidden;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 h-screen flex flex-col font-display">
+    <!-- Floating Alert Banner -->
+    <div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 animate-bounce">
+        <div
+            class="bg-amber-500/10 border border-amber-500/50 backdrop-blur-md px-6 py-3 rounded-xl flex items-center gap-3 shadow-2xl">
+            <span class="material-icons text-amber-500">warning</span>
+            <p class="text-amber-200 text-sm font-medium tracking-wide">Looking away detected. Please focus on the
+                screen.</p>
+        </div>
+    </div>
+    <!-- Top Navigation Bar -->
+    <header
+        class="h-16 border-b border-border-dark bg-background-light dark:bg-background-dark/80 backdrop-blur-xl flex items-center justify-between px-6 z-40">
+        <div class="flex items-center gap-4">
+            <div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+                <span class="material-icons text-white text-sm">shield</span>
+            </div>
+            <div>
+                <h1 class="text-sm font-semibold uppercase tracking-wider text-slate-400">Computer Science 301</h1>
+                <p class="text-xs font-medium text-slate-500">Advanced Topics Examination • Fall 2024</p>
+            </div>
+        </div>
+        <!-- Progress Tracker -->
+        <div class="hidden lg:flex items-center gap-2">
+            <div class="flex gap-1.5">
+                <div class="h-1.5 w-6 rounded-full bg-primary"></div>
+                <div class="h-1.5 w-6 rounded-full bg-primary"></div>
+                <div class="h-1.5 w-6 rounded-full bg-primary"></div>
+                <div class="h-1.5 w-6 rounded-full bg-primary/20"></div>
+                <div class="h-1.5 w-6 rounded-full bg-primary/20"></div>
+                <div class="h-1.5 w-6 rounded-full bg-primary/20"></div>
+            </div>
+            <span class="text-xs font-bold ml-2 text-slate-400">Question 3 of 12</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <div class="flex flex-col items-end">
+                <span class="text-xs font-medium text-slate-500 uppercase tracking-tighter">Time Remaining</span>
+                <div class="flex items-center gap-2 text-primary">
+                    <span class="material-icons text-sm">timer</span>
+                    <span class="text-xl font-bold tabular-nums" id="exam-timer">00:42:15</span>
+                </div>
+            </div>
+            <div class="h-10 w-[1px] bg-border-dark"></div>
+            <button onclick="finishExam()"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-500 px-4 py-2 rounded-lg text-sm font-bold transition-colors">
+                Finish Exam
+            </button>
+        </div>
+    </header>
+    <main class="flex-1 flex overflow-hidden">
+        <!-- Main Question Area -->
+        <section
+            class="flex-1 overflow-y-auto custom-scrollbar p-8 flex justify-center bg-background-light dark:bg-background-dark">
+            <div class="max-w-3xl w-full space-y-8">
+                <div class="bg-white dark:bg-surface-dark p-10 rounded-xl border border-border-dark shadow-sm">
+                    <div class="flex items-start justify-between mb-8">
+                        <span
+                            class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded uppercase tracking-widest">Multiple
+                            Choice</span>
+                        <span class="text-xs text-slate-500">Points: 10</span>
+                    </div>
+                    <h2 id="question-text"
+                        class="text-xl md:text-2xl font-medium leading-relaxed mb-10 text-slate-800 dark:text-slate-100">
+                        In the context of asynchronous programming in JavaScript, which of the following best describes
+                        the purpose of a "Promise" object?
+                    </h2>
+                    <div class="space-y-4">
+                        <label
+                            class="group relative flex items-center p-5 rounded-lg border border-border-dark hover:border-primary/50 bg-slate-50 dark:bg-background-dark/50 cursor-pointer transition-all">
+                            <input
+                                class="w-5 h-5 text-primary bg-background-dark border-border-dark focus:ring-primary focus:ring-offset-background-dark"
+                                name="answer" type="radio" />
+                            <span class="ml-4 text-slate-700 dark:text-slate-300 font-normal">It serves as a placeholder
+                                for a value that may not be available yet.</span>
+                        </label>
+                        <label
+                            class="group relative flex items-center p-5 rounded-lg border-2 border-primary bg-primary/5 cursor-pointer transition-all">
+                            <input checked=""
+                                class="w-5 h-5 text-primary bg-background-dark border-border-dark focus:ring-primary focus:ring-offset-background-dark"
+                                name="answer" type="radio" />
+                            <span class="ml-4 text-primary font-medium">It guarantees that a function will always
+                                execute synchronously without blocking the main thread.</span>
+                            <span class="ml-auto material-icons text-primary">check_circle</span>
+                        </label>
+                    </div>
+                    <div class="mt-8 pt-8 border-t border-border-dark flex justify-between">
+                        <button onclick="toggleFlag()"
+                            class="flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors text-sm font-medium">
+                            <span class="material-icons text-lg">flag</span>
+                            Flag for review
+                        </button>
+                        <button onclick="clearSelection()" class="text-primary hover:underline text-sm font-medium">Clear Selection</button>
+                    </div>
+                </div>
+                <!-- Pagination Footer -->
+                <div class="flex items-center justify-between">
+                    <button onclick="prevQuestion()"
+                        class="px-6 py-2.5 rounded-lg border border-border-dark hover:bg-surface-dark transition-colors font-semibold text-slate-400 flex items-center gap-2">
+                        <span class="material-icons">chevron_left</span>
+                        Previous
+                    </button>
+                    <button onclick="nextQuestion()"
+                        class="px-10 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-white transition-all font-semibold shadow-lg shadow-primary/20 flex items-center gap-2">
+                        Save &amp; Next
+                        <span class="material-icons">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- Proctoring Sidebar -->
+        <aside class="w-80 border-l border-border-dark bg-surface-dark p-6 flex flex-col gap-6">
+            <div class="space-y-4">
+                <div class="relative rounded-xl overflow-hidden border-2 border-emerald-500/30 group bg-slate-900">
+                    <video id="exam-camera" autoplay playsinline muted class="w-full aspect-video object-cover"></video>
+                </div>
+                <div class="bg-background-dark/50 p-4 rounded-xl border border-border-dark">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-slate-500 uppercase">AI Status</span>
+                        <span
+                            class="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[10px] font-black rounded-full uppercase">Monitoring
+                            Active</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-auto">
+                <button
+                    class="w-full flex items-center justify-center gap-2 p-3 bg-slate-800 hover:bg-slate-700 text-slate-400 rounded-lg text-xs font-bold transition-all border border-border-dark">
+                    <span class="material-icons text-sm">support_agent</span>
+                    Request Help
+                </button>
+            </div>
+        </aside>
+    </main>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/student.js"></script>
+</body>
+
+</html>
