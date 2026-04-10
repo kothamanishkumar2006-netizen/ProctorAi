@@ -1,10 +1,19 @@
 // ============================================================
 // api.js — ProctorAI Unified API Service
-// Base URL: http://localhost:5000
+// Auto-detects environment:
+//   → Development (localhost / 127.0.0.1): uses local backend
+//   → GitHub Pages / Production: uses BACKEND_URL below
 // Auth: Bearer token from localStorage ('authToken')
 // ============================================================
 
-const API_BASE_URL = 'http://localhost:5000/api';
+// ┌─────────────────────────────────────────────────────────┐
+// │  PRODUCTION BACKEND URL                                 │
+// │  Deploy your backend to Railway/Render, then paste URL  │
+// └─────────────────────────────────────────────────────────┘
+const PRODUCTION_BACKEND_URL = 'https://YOUR-BACKEND.up.railway.app/api';
+
+const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const API_BASE_URL = isLocal ? 'http://localhost:5000/api' : PRODUCTION_BACKEND_URL;
 
 class API {
 
