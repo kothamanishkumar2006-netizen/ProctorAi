@@ -3,7 +3,15 @@ const cors    = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://127.0.0.1:3000',
+        'https://kothamanishkumar2006-netizen.github.io'
+    ],
+    credentials: true
+}));
 // Increase limit to 5MB to handle webcam screenshot base64 payloads
 app.use(express.json({ limit: '5mb' }));
 
